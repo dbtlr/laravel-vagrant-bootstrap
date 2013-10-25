@@ -1,0 +1,122 @@
+---
+vagrantfile-local:
+    vm:
+        box: wheezy64
+        box_url: 'http://puppet-vagrant-boxes.puppetlabs.com/debian-70rc1-x64-vbox4210.box'
+        hostname: null
+        network:
+            private_network: 192.168.56.101
+            forwarded_port:
+                agdJfI76loG0:
+                    host: ''
+                    guest: ''
+        provider:
+            virtualbox:
+                modifyvm:
+                    name: php-box
+                    natdnshostresolver1: on
+                    memory: '512'
+                setextradata:
+                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+        provision:
+            puppet:
+                manifests_path: puppet/manifests
+                options:
+                    - --verbose
+                    - '--hiera_config /vagrant/vagrant/hiera.yaml'
+                    - '--parser future'
+        synced_folder:
+            6e3CN3TCvIku:
+                id: vagrant-root
+                source: ./
+                target: /var/www
+                nfs: 'false'
+        usable_port_range: 2200..2250
+    ssh:
+        host: null
+        port: null
+        private_key_path: null
+        username: vagrant
+        guest_port: null
+        keep_alive: true
+        forward_agent: false
+        forward_x11: false
+        shell: 'bash -l'
+    vagrant:
+        host: ':detect'
+server:
+    packages:
+        - build-essential
+        - vim
+        - curl
+        - git-core
+        - redis-server
+        - memcached
+    dot_files:
+        -
+            bash_aliases: null
+apache:
+    modules:
+        - php
+        - rewrite
+    vhosts:
+        T2GvBq31rB00:
+            servername: app.dev
+            docroot: /var/www/public
+            port: '80'
+            setenv:
+                - 'APP_ENV dev'
+            override:
+                - All
+    user: www-data
+    group: www-data
+    default_vhost: true
+    mpm_module: prefork
+php:
+    version: '55'
+    composer: '1'
+    modules:
+        php:
+            - cli
+            - curl
+            - intl
+            - mcrypt
+            - gd
+            - imagick
+            - memcached
+            - tidy
+        pear: {  }
+        pecl:
+            - pecl_http
+            - PDO
+            - PDO_MYSQL
+            - APC
+    ini:
+        display_errors: On
+        error_reporting: '-1'
+    timezone: America/New_York
+xdebug:
+    install: '1'
+    settings:
+        xdebug.default_enable: '1'
+        xdebug.remote_autostart: '0'
+        xdebug.remote_connect_back: '1'
+        xdebug.remote_enable: '1'
+        xdebug.remote_handler: dbgp
+        xdebug.remote_port: '9000'
+xhprof:
+    install: '1'
+    location: /var/www/vagrant/xhprof
+mysql:
+    root_password: '123'
+    phpmyadmin: 0
+    databases:
+        CuXFujIytHZz:
+            grant:
+                - ALL
+            name: app
+            host: localhost
+            user: app
+            password: app
+            sql_file: ''
+

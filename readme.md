@@ -1,0 +1,1 @@
+## Starter Vagrant / Laravel Application.
